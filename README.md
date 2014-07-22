@@ -1,1 +1,1 @@
-Java skeleton projects for accessing NoSQL datastores MongoDB, Neo4j and Redis
+Java skeleton projects for accessing NoSQL datastores MongoDB, Neo4j and Redis.
