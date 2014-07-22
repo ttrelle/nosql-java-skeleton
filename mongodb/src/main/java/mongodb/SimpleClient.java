@@ -19,30 +19,35 @@ public class SimpleClient {
 
 	private static final Log LOG = LogFactory.getLog(SimpleClient.class);
 	
-    @RequestMapping("/findAll/{db}/{collection}")
+    @RequestMapping("/findAll")
     @ResponseBody
-    String find(@PathVariable String db, @PathVariable String collection) throws UnknownHostException {
-    	LOG.info( "DB: " + db + " Collection: " + collection );
+    String find(@RequestParam String db, @RequestParam String c) throws UnknownHostException {
+    	LOG.info( "DB: " + db + " Collection: " + c );
     	
     	MongoClient client = new MongoClient();
-    	DBCollection c = client.getDB(db).getCollection(collection);
-    	DBCursor crsr = c.find();
-    	StringBuilder sb = new StringBuilder("[ ");
+    	DBCollection coll = client.getDB(db).getCollection(c);
+    	DBCursor crsr = coll.find();
     	
-    	boolean first = true;
-    	while ( crsr.hasNext() ) {
-    		if (!first) {
-    			sb.append(", ");
-    		}
-    		first = false;
-    		sb.append( crsr.next().toString() );
-    	}
-    	sb.append(" ]");
-    	
-        return sb.toString();
+        return toJsonArray(crsr);
     }
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SimpleClient.class, args);
+    }
+    
+    private static String toJsonArray(DBCursor crsr) {
+    	final StringBuilder sb = new StringBuilder("[\n");
+    	boolean first = true;
+    	
+    	while ( crsr.hasNext() ) {
+    		if (!first) {
+    			sb.append(" ,\n");
+    		}
+    		first = false;
+    		sb.append( crsr.next().toString() );
+    	}
+    	sb.append("\n]");
+    	
+        return sb.toString();
     }
 }

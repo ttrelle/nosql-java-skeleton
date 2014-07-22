@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="jquery-2.1.1.min.js"></script>
 	<title>MongoDB Web Client</title>
 	<style>
 		body { margin: 25px 0px 0px 0px; padding: 0; }
@@ -60,7 +60,7 @@ $(document).ready(function(){
 	$("textarea").val("");
 	var db = $("input[id=db]").val();
 	var collection = $("input[id=collection]").val();
-	var uri = encodeURI("/findAll/" + db + "/" + collection);
+	var uri = "/findAll?db=" + escape(db) + "&c=" + escape(collection);
 	
 	//alert("URI: " + uri);
 	
